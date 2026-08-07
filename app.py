@@ -1,95 +1,118 @@
 import streamlit as st
-import random
 
 st.set_page_config(page_title="Arcade de Minijogos", page_icon="🎮", layout="centered")
 
 st.title("🎮 Fliperama da Família")
 st.write("Escolha um minijogo abaixo e divirta-se direto pelo navegador!")
 
-# Inicializa placares e estados globais
-if "cliques_p1" not in st.session_state:
-    st.session_state.cliques_p1 = 0
-if "cliques_p2" not in st.session_state:
-    st.session_state.cliques_p2 = 0
-
-if "secreto" not in st.session_state:
-    st.session_state.secreto = random.randint(1, 20)
-    st.session_state.tentativas = 0
-
-if "placar_jokempo" not in st.session_state:
-    st.session_state.placar_jokempo = {"voce": 0, "ia": 0}
-
 # Abas para separar os jogos
-aba1, aba2, aba3, aba4 = st.tabs(["🖱️ Batalha de Cliques", "🔢 Adivinhe o Número", "✂️ Jo-Ken-Pô", "🧠 Quiz Rápido"])
+aba1, aba2 = st.tabs(["⚽ Mini Futebol Interativo", "🧠 Quiz Rápido"])
 
 with aba1:
-    st.subheader("Batalha de Cliques (2 Jogadores)")
-    st.write("Quem clicar mais rápido no seu botão ganha pontos!")
+    st.subheader("Mini Futebol 2D")
+    st.write("Use as setas do teclado ou W,A,S,D para controlar o jogador e chutar a bola para o gol!")
+
+    # Código HTML/JS do jogo embutido diretamente no Streamlit
+    html_futebol = """
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body { background: #111; color: white; text-align: center; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+            canvas { background: #2e7d32; border: 4px solid white; display: block; margin: 10px auto; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+        </style>
+    </head>
+    <body>
+        <canvas id="campo" width="600" height="300"></canvas>
+        <script>
+            const canvas = document.getElementById('campo');
+            const ctx = canvas.getContext('2d');
+
+            let player = { x: 150, y: 150, radius: 15, speed: 4 };
+            let ball = { x: 300, y: 150, radius: 10, vx: 0, vy: 0 };
+            let keys = {};
+
+            window.addEventListener('keydown', (e) => keys[e.key.toLowerCase()] = true);
+            window.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
+
+            function update() {
+                if (keys['arrowup'] || keys['w']) player.y -= player.speed;
+                if (keys['arrowdown'] || keys['s']) player.y += player.speed;
+                if (keys['arrowleft'] || keys['a']) player.x -= player.speed;
+                if (keys['arrowright'] || keys['d']) player.x += player.speed;
+
+                // Limites do campo
+                player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
+                player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y));
+
+                // Movimento da bola
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+                ball.vx *= 0.98;
+                ball.vy *= 0.98;
+
+                // Paredes
+                if (ball.x < ball.radius || ball.x > canvas.width - ball.radius) ball.vx *= -1;
+                if (ball.y < ball.radius || ball.y > canvas.height - ball.radius) ball.vy *= -1;
+
+                // Colisão Jogador-Bola
+                let distX = ball.x - player.x;
+                let distY = ball.y - player.y;
+                let distance = Math.sqrt(distX * distX + distY * distY);
+
+                if (distance < player.radius + ball.radius) {
+                    ball.vx = distX * 0.25;
+                    ball.vy = distY * 0.25;
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Meio de campo
+                ctx.strokeStyle = "white";
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, 50, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, 0);
+                ctx.lineTo(canvas.width / 2, canvas.height);
+                ctx.stroke();
+
+                // Bola
+                ctx.fillStyle = "white";
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Jogador
+                ctx.fillStyle = "#ffeb3b";
+                ctx.beginPath();
+                ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#000";
+                ctx.stroke();
+            }
+
+            function loop() {
+                update();
+                draw();
+                requestAnimationFrame(loop);
+            }
+
+            loop();
+        </script>
+    </body>
+    </html>
+    """
     
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("### Jogador 1")
-        if st.button("🔴 Clique Aqui (P1)", key="btn_c1"):
-            st.session_state.cliques_p1 += 1
-            
-    with col2:
-        st.markdown("### Jogador 2")
-        if st.button("🔵 Clique Aqui (P2)", key="btn_c2"):
-            st.session_state.cliques_p2 += 1
-            
-    st.markdown("---")
-    st.write(f"**Placar:** P1: `{st.session_state.cliques_p1}` x P2: `{st.session_state.cliques_p2}`")
-    
-    if st.button("🔄 Zerar Placar de Cliques"):
-        st.session_state.cliques_p1 = 0
-        st.session_state.cliques_p2 = 0
-        st.rerun()
+    # Renderiza o jogo de futebol na tela do Streamlit com altura ajustada
+    st.components.v1.html(html_futebol, height=350)
 
 with aba2:
-    st.subheader("Adivinhe o Número Secreto")
-    st.write("Tente adivinhar um número de **1 a 20** que estou pensando!")
-    
-    palpite = st.number_input("Digite seu palpite:", min_value=1, max_value=20, step=1, key="input_adv")
-    
-    if st.button("Testar Palpite"):
-        st.session_state.tentativas += 1
-        if palpite == st.session_state.secreto:
-            st.balloons()
-            st.success(f"🎉 Acertou em {st.session_state.tentativas} tentativas! O número era {st.session_state.secreto}.")
-            st.session_state.secreto = random.randint(1, 20)
-            st.session_state.tentativas = 0
-        elif palpite < st.session_state.secreto:
-            st.warning("📈 O número secreto é **maior**!")
-        else:
-            st.warning("📉 O número secreto é **menor**!")
-
-with aba3:
-    st.subheader("Jo-Ken-Pô (Pedra, Papel e Tesoura)")
-    
-    escolha_usuario = st.radio("Escolha sua jogada:", ["Pedra", "Papel", "Tesoura"], key="radio_jkp")
-    
-    if st.button("Jogar contra a Máquina"):
-        opcoes = ["Pedra", "Papel", "Tesoura"]
-        escolha_ia = random.choice(opcoes)
-        
-        st.write(f"🤖 A IA escolheu: **{escolha_ia}**")
-        
-        if escolha_usuario == escolha_ia:
-            st.info("Empate!")
-        elif (
-            (escolha_usuario == "Pedra" and escolha_ia == "Tesoura") or
-            (escolha_usuario == "Papel" and escolha_ia == "Pedra") or
-            (escolha_usuario == "Tesoura" and escolha_ia == "Papel")
-        ):
-            st.success("Você venceu esta rodada! 🎉")
-            st.session_state.placar_jokempo["voce"] += 1
-        else:
-            st.error("A IA venceu! 😢")
-            st.session_state.placar_jokempo["ia"] += 1
-            
-        st.write(f"Placar -> Você: {st.session_state.placar_jokempo['voce']} | IA: {st.session_state.placar_jokempo['ia']}")
-
-with aba4:
     st.subheader("Quiz Rápido de Cultura Pop e Jogos")
     
     pergunta = "Qual destes jogos o criador deste site mais joga/conhece bem?"
