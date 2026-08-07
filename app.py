@@ -5,14 +5,12 @@ st.set_page_config(page_title="Arcade de Minijogos", page_icon="🎮", layout="c
 st.title("🎮 Fliperama da Família")
 st.write("Escolha um minijogo abaixo e divirta-se direto pelo navegador!")
 
-# Abas para separar os jogos
 aba1, aba2 = st.tabs(["⚽ Mini Futebol Interativo", "🧠 Quiz Rápido"])
 
 with aba1:
     st.subheader("Mini Futebol 2D")
     st.write("Use as setas do teclado ou W,A,S,D para controlar o jogador e chutar a bola para o gol!")
 
-    # Código HTML/JS do jogo embutido diretamente no Streamlit
     html_futebol = """
     <!DOCTYPE html>
     <html lang="pt-BR">
@@ -42,7 +40,7 @@ with aba1:
                 if (keys['arrowleft'] || keys['a']) player.x -= player.speed;
                 if (keys['arrowright'] || keys['d']) player.x += player.speed;
 
-                // Limites do campo
+                // Limites do jogador dentro do campo
                 player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
                 player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y));
 
@@ -52,18 +50,29 @@ with aba1:
                 ball.vx *= 0.98;
                 ball.vy *= 0.98;
 
-                // Paredes
-                if (ball.x < ball.radius || ball.x > canvas.width - ball.radius) ball.vx *= -1;
-                if (ball.y < ball.radius || ball.y > canvas.height - ball.radius) ball.vy *= -1;
+                // Correção segura de colisão com as paredes (impede que a bola escape)
+                if (ball.x - ball.radius < 0) { ball.x = ball.radius; ball.vx *= -1; }
+                if (ball.x + ball.radius > canvas.width) { ball.x = canvas.width - ball.radius; ball.vx *= -1; }
+                if (ball.y - ball.radius < 0) { ball.y = ball.radius; ball.vy *= -1; }
+                if (ball.y + ball.radius > canvas.height) { ball.y = canvas.height - ball.radius; ball.vy *= -1; }
 
-                // Colisão Jogador-Bola
+                // Colisão Jogador-Bola com expulsão para evitar travamento
                 let distX = ball.x - player.x;
                 let distY = ball.y - player.y;
                 let distance = Math.sqrt(distX * distX + distY * distY);
+                let minDist = player.radius + ball.radius;
 
-                if (distance < player.radius + ball.radius) {
-                    ball.vx = distX * 0.25;
-                    ball.vy = distY * 0.25;
+                if (distance < minDist) {
+                    let overlap = minDist - distance;
+                    let angle = Math.atan2(distY, distX);
+                    
+                    // Afasta a bola para fora do jogador instantaneamente
+                    ball.x += Math.cos(angle) * overlap;
+                    ball.y += Math.sin(angle) * overlap;
+
+                    // Adiciona força ao chute
+                    ball.vx = Math.cos(angle) * 6 + (player.speed * 0.5);
+                    ball.vy = Math.sin(angle) * 6 + (player.speed * 0.5);
                 }
             }
 
@@ -109,7 +118,6 @@ with aba1:
     </html>
     """
     
-    # Renderiza o jogo de futebol na tela do Streamlit com altura ajustada
     st.components.v1.html(html_futebol, height=350)
 
 with aba2:
