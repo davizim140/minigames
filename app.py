@@ -101,7 +101,6 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
         st.markdown("### 🔴 Pokébola Sugerida (Cobblemon & Pixelmon)")
         st.info("💡 **Dica de Captura:** Nos mods de Minecraft, qualquer Pokébola padrão funciona para capturar a maioria dos Pokémon, mas tipos específicos ajudam dependendo do peso, velocidade ou ambiente do Pokémon!")
         
-        # Lógica simples baseada nos tipos ou peso para sugerir pokébolas divertidas
         tipos_str = [t.lower() for t in tipos]
         if 'Water' in tipos or 'Água' in tipos:
             bola_sugerida = "Dive Ball / Lure Ball (Excelente para Pokémon aquáticos ou pescados)"
@@ -217,9 +216,9 @@ else:
 
     with aba3:
         st.subheader("🟩 Mods de Minecraft & Guia de Farms")
-        st.write("Explore dicas para Cobblemon/Pixelmon e tutoriais rápidos para as melhores farms do Minecraft!")
+        st.write("Explore dicas para Cobblemon/Pixelmon e tutoriais rápidos de farms de itens!")
 
-        sub_aba1, sub_aba2, sub_aba3 = st.tabs(["🟢 Cobblemon", "🟡 Pixelmon", "⚙️ Guia de Farms"])
+        sub_aba1, sub_aba2, sub_aba3 = st.tabs(["🟢 Cobblemon", "🟡 Pixelmon", "⚙️ Guia Completo de Farms"])
 
         with sub_aba1:
             st.markdown("### 🟢 Sobre o Cobblemon")
@@ -238,21 +237,57 @@ else:
             st.markdown("- [Wiki Oficial do Pixelmon](https://pixelmonmod.com/wiki/)")
 
         with sub_aba3:
-            st.markdown("### ⚙️ Guia de Tutoriais de Farms no Minecraft")
-            st.write("Dicas essenciais para construir as automações mais úteis no seu mundo survival:")
+            st.markdown("### ⚙️ Guia Completo de Farms de Itens")
 
-            st.markdown("#### 1. 🌾 Farm de Ferro Automática (Iron Farm)")
-            st.write("- **Como funciona:** Utiliza um aldeão assustado por um zumbi para gerar Golems de Ferro continuamente.")
-            st.write("- **Requisitos:** 3 Aldeões, 1 Zumbi com identificador (name tag), camas e uma plataforma de queda com lava e funis.")
+            farm_tab1, farm_tab2, farm_tab3 = st.tabs(["🟢 Farms Cobblemon", "🟡 Farms Pixelmon", "🧱 Vanilla Minecraft"])
 
-            st.markdown("---")
+            with farm_tab1:
+                st.markdown("#### 🟢 1. Farm Automática de Apricorns (Cobblemon)")
+                st.write("- **Item Obtido:** Apricorns (Vermelha, Azul, Amarela, etc.) para fazer Pokébolas.")
+                st.write("- **Como construir:** Plante árvores de Apricorn em fileiras com blocos de observadores (Observer) detectando o crescimento do fruto ou use um Allay / carrinho com funil (Hopper Minecart) passando por baixo dos blocos para coletar as frutas caídas.")
 
-            st.markdown("#### 2. 🎣 Farm de pesca AFK")
-            st.write("- **Como funciona:** Permite pescar automaticamente itens valiosos sem esforço manual.")
-            st.write("- **Requisitos:** Bloco de nota, gancho de armadilha, fio, água e um peso/macro para segurar o botão direito do mouse.")
+                st.markdown("---")
 
-            st.markdown("---")
+                st.markdown("#### 🟢 2. Farm de Tumblestones (Pedra Tumbl)")
+                st.write("- **Item Obtido:** Tumblestone, Black Tumblestone e Sky Tumblestone.")
+                st.write("- **Como construir:** Crie geradores automáticos de pedra (Cobblestone Generator) em biomas específicos onde as Tumblestones são geradas no lugar da pedra comum ou derrote Pokémon do tipo Pedra/Aço automaticamente.")
 
-            st.markdown("#### 3. 🧪 Farm de XP e Ouro (Portal do Nether)")
-            st.write("- **Como funciona:** Constrói portais gigantes no Nether linkados para gerar quantidades massivas de Piglins Zumbificados.")
-            st.write("- **Vantagem:** Excelente para subir do nível 0 ao 30 em segundos e coletar ouro.")
+                st.markdown("---")
+
+                st.markdown("#### 🟢 3. Farm de Drops de Batalha (Auto-Battler / KO)")
+                st.write("- **Item Obtido:** Helds Items, EXP Candies, Evolution Stones.")
+                st.write("- **Como construir:** Faça uma plataforma de spawn em cavernas ou oceanos com água empurrando Pokémon selvagens para um ponto central. Use um Pokémon forte no modo de batalha rápida para coletar drops constantes.")
+
+            with farm_tab2:
+                st.markdown("#### 🟡 1. Farm de Apricorns com Dispenser & Harvester (Pixelmon)")
+                st.write("- **Item Obtido:** Apricorns para tampas de Pokébolas.")
+                st.write("- **Como construir:** Plante as mudas de Apricorn em terra/grama, posicione Harvesters ou dispensers com tesouras/cliques automáticos para colher as frutas sem quebrar a árvore.")
+
+                st.markdown("---")
+
+                st.markdown("#### 🟡 2. Farm de Frutas / Berries e Mints")
+                st.write("- **Item Obtido:** Mints (para alterar Natureza), Berries de redução de EV e cura.")
+                st.write("- **Como construir:** Monte fazendas irrigadas com água e fertilizante (Wailmer Pail / Bonemeal especial). Use robôs ou funis para armazenar os frutos maduros.")
+
+                st.markdown("---")
+
+                st.markdown("#### 🟡 3. Farm de Bosses & Mega Stones / Bauxita")
+                st.write("- **Item Obtido:** Mega Stones, Bauxita (Alumínio), TMs e Held Items valiosos.")
+                st.write("- **Como construir:** Crie plataformas de spawn no ar ou no subsolo (de acordo com o bioma do Boss desejado) utilizando lâmpadas de iluminação para controlar o limite de monstrinhos.")
+
+            with farm_tab3:
+                st.markdown("#### 🧱 1. Farm de Ferro Automática (Iron Farm)")
+                st.write("- **Como funciona:** Utiliza um aldeão assustado por um zumbi para gerar Golems de Ferro continuamente.")
+                st.write("- **Requisitos:** 3 Aldeões, 1 Zumbi com name tag, camas, lava e funis.")
+
+                st.markdown("---")
+
+                st.markdown("#### 🧱 2. Farm de Pesca AFK")
+                st.write("- **Como funciona:** Permite pescar automaticamente itens valiosos sem esforço manual.")
+                st.write("- **Requisitos:** Bloco de nota, gancho de armadilha, fio, água e um peso/macro no botão direito.")
+
+                st.markdown("---")
+
+                st.markdown("#### 🧱 3. Farm de XP e Ouro (Portal do Nether)")
+                st.write("- **Como funciona:** Constrói portais gigantes no Nether para gerar quantidades massivas de Piglins Zumbificados.")
+                st.write("- **Vantagem:** Excelente para subir do nível 0 ao 30 rapidamente e coletar ouro.")
