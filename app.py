@@ -215,49 +215,92 @@ else:
 
     with aba3:
         st.subheader("🟩 Mods de Minecraft & Tutoriais em Vídeo de Farms")
-        st.write("Explore dicas, lista completa de 10 farms para cada mod e os links dos tutoriais do YouTube!")
+        st.write("Explore a lista completa de 10 farms para cada mod com links diretos de tutoriais do YouTube inseridos em cada item!")
 
-        sub_aba1, sub_aba2, sub_aba3 = st.tabs(["🟢 10 Farms de Cobblemon", "🟡 10 Farms de Pixelmon", "📺 Tutoriais do YouTube"])
+        sub_aba1, sub_aba2 = st.tabs(["🟢 10 Farms de Cobblemon (com YouTube)", "🟡 10 Farms de Pixelmon (com YouTube)"])
 
         with sub_aba1:
-            st.markdown("### 🟢 Top 10 Farms para Cobblemon")
-            st.markdown("1. **Farm Automática de Apricorns**: Plantação em fileiras colhida por carrinhos com funil ou Allays.")
-            st.markdown("2. **Gerador Automático de Tumblestones**: Aproveita biomas específicos para gerar pedras de evolução.")
-            st.markdown("3. **Farm de Pasture / Exp Passiva**: Sistema de currais cercados para gerar XP e amizade automática.")
-            st.markdown("4. **Farm de Itens de Batalha (Held Items)**: Plataforma de batalha automatizada contra monstrinhos selvagens.")
-            st.markdown("5. **Farm de Frutas (Berries) com Dispensers**: Sistema de osso-farelo (bonemeal) para reprodução rápida.")
-            st.markdown("6. **Arena de Treinamento de EVs Automática**: Espaço confinado com spawns específicos de tipos.")
-            st.markdown("7. **Farm de Apicultores e Mel para Comidas**: Útil para criar itens de cura caseiros.")
-            st.markdown("8. **Farm de Drops de Cura / Medicinal Leek**: Plantações focadas em ervas medicinais do mod.")
-            st.markdown("9. **Estação de Troca Automatizada**: Configuração de baús e computadores para comércio local.")
-            st.markdown("10. **Farm de Ovos / Incubação em Massa**: Sistema compacto com aquecedores e esteiras para chocar ovos.")
-            st.markdown("[🔗 Wiki Oficial do Cobblemon](https://wiki.cobblemon.com/)")
+            st.markdown("### 🟢 Top 10 Farms para Cobblemon e Tutoriais")
+            
+            st.markdown("1. **Farm Automática de Apricorns**")
+            st.markdown("   - *Descrição:* Plantação em fileiras colhida por carrinhos com funil ou Allays.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/watch?v=YPVa-ejpbMg)")
+            
+            st.markdown("2. **Gerador Automático de Tumblestones**")
+            st.markdown("   - *Descrição:* Aproveita biomas específicos para gerar pedras de evolução.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/watch?v=hQ8t3CMhEFs)")
+            
+            st.markdown("3. **Farm de Pasture / Exp Passiva**")
+            st.markdown("   - *Descrição:* Sistema de currais cercados para gerar XP e amizade automática.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/watch?v=5PG0fVHx0Ns)")
+            
+            st.markdown("4. **Farm de Itens de Batalha (Held Items)**")
+            st.markdown("   - *Descrição:* Plataforma de batalha automatizada contra monstrinhos selvagens.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=cobblemon+held+items+farm+tutorial)")
+            
+            st.markdown("5. **Farm de Frutas (Berries) com Dispensers**")
+            st.markdown("   - *Descrição:* Sistema de osso-farelo (bonemeal) para reprodução rápida.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=cobblemon+berry+farm+tutorial)")
+            
+            st.markdown("6. **Arena de Treinamento de EVs Automática**")
+            st.markdown("   - *Descrição:* Espaço confinado com spawns específicos de tipos.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=cobblemon+ev+training+farm)")
+            
+            st.markdown("7. **Farm de Apicultores e Mel para Comidas**")
+            st.markdown("   - *Descrição:* Útil para criar itens de cura caseiros.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=minecraft+automatic+honey+farm)")
+            
+            st.markdown("8. **Farm de Drops de Cura / Medicinal Leek**")
+            st.markdown("   - *Descrição:* Plantações focadas em ervas medicinais do mod.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=cobblemon+medicinal+leek+farm)")
+            
+            st.markdown("9. **Estação de Troca Automatizada**")
+            st.markdown("   - *Descrição:* Configuração de baús e computadores para comércio local.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=cobblemon+trade+station+setup)")
+            
+            st.markdown("10. **Farm de Ovos / Incubação em Massa**")
+            st.markdown("   - *Descrição:* Sistema compacto com aquecedores e esteiras para chocar ovos.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=cobblemon+egg+hatchery+farm)")
 
         with sub_aba2:
-            st.markdown("### 🟡 Top 10 Farms para Pixelmon")
-            st.markdown("1. **Farm de Apricorns com Harvester**: Colheitadeiras mecânicas colhendo frutos automaticamente.")
-            st.markdown("2. **Farm de Mints e Vitaminas**: Produção em escala de itens de alteração de atributos.")
-            st.markdown("3. **Spawner Automático de Bosses**: Plataforma subterrânea iluminada para forçar o nascimento de chefões.")
-            st.markdown("4. **Farm de Minério de Bauxita (Alumínio)**: Mineração otimizada para bases de Pokébolas.")
-            st.markdown("5. **Rancho de Criação (Breeding Ranch) Automatizado**: Sistema com pastos e relógios para ovos.")
-            st.markdown("6. **Farm de XP em Massa (Relearners/Tutors)**: Área de combate otimizada contra monstrinhos de alto nível.")
-            st.markdown("7. **Farm de Dinheiro (PokeDollars) com Pay Day**: Batalhas automatizadas contra NPCs.")
-            st.markdown("8. **Farm de Frutas Especiais (Berries Raras)**: Estufas com sistemas de irrigação avançados.")
-            st.markdown("9. **Reciclador de Itens / Apricorn Scrap Farm**: Conversão automática de itens inúteis em recursos.")
-            st.markdown("10. **Farm de Fósseis (Fossil Machine Automation)**: Sistema de esteiras e energia para fósseis.")
-            st.markdown("[🔗 Wiki Oficial do Pixelmon](https://pixelmonmod.com/wiki/)")
-
-        with sub_aba3:
-            st.markdown("### 📺 Tutoriais do YouTube Selecionados")
+            st.markdown("### 🟡 Top 10 Farms para Pixelmon e Tutoriais")
             
-            st.markdown("#### 🟢 Cobblemon")
-            st.markdown("- [Assistir no YouTube: Multi-layered Apricorn Farm (Cobblemon)](https://www.youtube.com/watch?v=YPVa-ejpbMg)")
-            st.markdown("- [Assistir no YouTube: Apricorn Farming Tutorial](https://www.youtube.com/watch?v=hQ8t3CMhEFs)")
-            st.markdown("- [Assistir no YouTube: Easy AFK Apricorn Farm](https://www.youtube.com/watch?v=5PG0fVHx0Ns)")
+            st.markdown("1. **Farm de Apricorns com Harvester**")
+            st.markdown("   - *Descrição:* Colheitadeiras mecânicas colhendo frutos automaticamente.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/watch?v=Pl_v3wdKSiI)")
             
-            st.markdown("---")
+            st.markdown("2. **Farm de Mints e Vitaminas**")
+            st.markdown("   - *Descrição:* Produção em escala de itens de alteração de atributos.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/watch?v=GzAGLoOC0fk)")
             
-            st.markdown("#### 🟡 Pixelmon")
-            st.markdown("- [Assistir no YouTube: Ultimate Apricorn Farm (Pixelmon)](https://www.youtube.com/watch?v=Pl_v3wdKSiI)")
-            st.markdown("- [Assistir no YouTube: Automatic Apricorn Farm 1.16.5](https://www.youtube.com/watch?v=GzAGLoOC0fk)")
-            st.markdown("- [Assistir no YouTube: Ranch Block Como Reproduzir Pokémons](https://www.youtube.com/watch?v=jGgccjYes2M)")
+            st.markdown("3. **Spawner Automático de Bosses**")
+            st.markdown("   - *Descrição:* Plataforma subterrânea iluminada para forçar o nascimento de chefões.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=pixelmon+boss+spawner+farm)")
+            
+            st.markdown("4. **Farm de Minério de Bauxita (Alumínio)**")
+            st.markdown("   - *Descrição:* Mineração otimizada para bases de Pokébolas.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=pixelmon+bauxite+ore+farm)")
+            
+            st.markdown("5. **Rancho de Criação (Breeding Ranch) Automatizado**")
+            st.markdown("   - *Descrição:* Sistema com pastos e relógios para ovos contínuos.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/watch?v=jGgccjYes2M)")
+            
+            st.markdown("6. **Farm de XP em Massa (Relearners/Tutors)**")
+            st.markdown("   - *Descrição:* Área de combate otimizada contra monstrinhos de alto nível.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=pixelmon+xp+farm+tutorial)")
+            
+            st.markdown("7. **Farm de Dinheiro (PokeDollars) com Pay Day**")
+            st.markdown("   - *Descrição:* Batalhas automatizadas contra NPCs ou selvagens.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=pixelmon+money+farm+pay+day)")
+            
+            st.markdown("8. **Farm de Frutas Especiais (Berries Raras)**")
+            st.markdown("   - *Descrição:* Estufas com sistemas de irrigação avançados.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=pixelmon+rare+berry+farm)")
+            
+            st.markdown("9. **Reciclador de Itens / Apricorn Scrap Farm**")
+            st.markdown("   - *Descrição:* Conversão automática de itens inúteis em recursos.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=pixelmon+recycler+farm)")
+            
+            st.markdown("10. **Farm de Fósseis (Fossil Machine Automation)**")
+            st.markdown("   - *Descrição:* Sistema de esteiras e energia para restaurar fósseis em série.")
+            st.markdown("   - [📺 Assistir Tutorial no YouTube](https://www.youtube.com/results?search_query=pixelmon+fossil+machine+setup)")
