@@ -4,7 +4,7 @@ import requests
 st.set_page_config(page_title="Pokédex Oficial", page_icon="🔴", layout="centered")
 
 st.title("🔴 Pokédex Interativa")
-st.write("Pesquise por nome, letras, geração ou explore o conteúdo de Cobblemon e Pixelmon!")
+st.write("Pesquise por nome, letras, geração ou explore o conteúdo de Cobblemon, Pixelmon e Farms!")
 
 @st.cache_data
 def carregar_todos_pokemons():
@@ -130,7 +130,7 @@ if "geracao_atual" not in st.session_state:
 if st.session_state.pokemon_selecionado:
     mostrar_detalhes_pokemon(st.session_state.pokemon_selecionado)
 else:
-    aba1, aba2, aba3 = st.tabs(["🔍 Pesquisa por Nome ou Letras", "🌍 Pesquisar por Geração", "🟩 Cobblemon & Pixelmon"])
+    aba1, aba2, aba3 = st.tabs(["🔍 Pesquisa por Nome ou Letras", "🌍 Pesquisar por Geração", "🟩 Cobblemon, Pixelmon & Farms"])
 
     with aba1:
         termo_busca = st.text_input("Digite o nome ou letras do Pokémon (ex: 'cha', 'pikachu'):").lower().strip()
@@ -193,36 +193,51 @@ else:
                 with cols[idx % 3]:
                     st.markdown(f"**#{p_id}** - {p_nome}")
                     img_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png"
-                    img_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png"
                     st.image(img_url, width=90)
                     if st.button(f"Ver Detalhes", key=f"btn_gen_{p_id}_{idx}"):
                         st.session_state.pokemon_selecionado = p_id
                         st.rerun()
 
     with aba3:
-        st.subheader("🟩 Mods de Minecraft: Cobblemon & Pixelmon")
-        st.write("Informações e dicas úteis para os principais mods de Pokémon no Minecraft!")
+        st.subheader("🟩 Mods de Minecraft & Guia de Farms")
+        st.write("Explore dicas para Cobblemon/Pixelmon e tutoriais rápidos para as melhores farms do Minecraft!")
 
-        sub_aba1, sub_aba2 = st.tabs(["🟢 Cobblemon", "🟡 Pixelmon"])
+        sub_aba1, sub_aba2, sub_aba3 = st.tabs(["🟢 Cobblemon", "🟡 Pixelmon", "⚙️ Guia de Farms"])
 
         with sub_aba1:
             st.markdown("### 🟢 Sobre o Cobblemon")
-            st.write("O **Cobblemon** é um mod moderno focado em integração total com o estilo visual do Minecraft (estilo Fakemon/Vanilla) e compatibilidade com datapacks e mods de animação.")
-            
-            st.markdown("#### 🛠️ Comandos Úteis (Admin/Cheat)")
-            st.code("/cobblemon give [jogador] [pokemon] - Dá um Pokémon para o jogador\n/spawnpokemon - Spawna um Pokémon manualmente\n/pokegive - Atalho para resgatar monstrinhos", language="text")
-
-            st.markdown("#### 🌐 Links e Recursos")
+            st.write("O **Cobblemon** é um mod moderno focado em integração total com o estilo visual do Minecraft.")
+            st.markdown("#### 🛠️ Comandos Úteis")
+            st.code("/cobblemon give [jogador] [pokemon]\n/spawnpokemon\n/pokegive", language="text")
             st.markdown("- [Site Oficial do Cobblemon](https://cobblemon.com/)")
             st.markdown("- [Wiki Oficial](https://wiki.cobblemon.com/)")
 
         with sub_aba2:
             st.markdown("### 🟡 Sobre o Pixelmon (Pixelmon Reforged)")
-            st.write("O **Pixelmon** traz a experiência clássica dos jogos de console para o Minecraft, com modelos 3D fiéis, sistemas completos de batalhas, GYMs, NPCs e montarias.")
-
+            st.write("O **Pixelmon** traz a experiência clássica dos jogos para o Minecraft com modelos 3D completos.")
             st.markdown("#### 🛠️ Comandos Úteis")
-            st.code("/pokegive [jogador] [pokemon] - Adiciona um Pokémon à equipe ou PC\n/pokespawn [pokemon] - Força o spawn de um Pokémon\n/pokeheal [jogador] - Cura todos os Pokémon da equipe", language="text")
-
-            st.markdown("#### 🌐 Links e Recursos")
+            st.code("/pokegive [jogador] [pokemon]\n/pokespawn [pokemon]\n/pokeheal", language="text")
             st.markdown("- [Site Oficial do Pixelmon](https://pixelmonmod.com/)")
             st.markdown("- [Wiki Oficial do Pixelmon](https://pixelmonmod.com/wiki/)")
+
+        with sub_aba3:
+            st.markdown("### ⚙️ Guia de Tutoriais de Farms no Minecraft")
+            st.write("Dicas essenciais para construir as automações mais úteis no seu mundo survival:")
+
+            st.markdown("#### 1. 🌾 Farm de Ferro Automática (Iron Farm)")
+            st.write("- **Como funciona:** Utiliza um aldeão assustado por um zumbi para gerar Golems de Ferro continuamente.")
+            st.write("- **Requisitos:** 3 Aldeões, 1 Zumbi com identificador (name tag), camas e uma plataforma de queda com lava e funis.")
+            st.write("- **Dica:** Mantenha a farm longe de vilas ativas para evitar interferências no spawn dos Golems.")
+
+            data_separator = "---"
+            st.markdown(data_separator)
+
+            st.markdown("#### 2. 🎣 Farm de pesca AFK")
+            st.write("- **Como funciona:** Permite pescar automaticamente itens valiosos (como livros encantados, arcos e varas) sem esforço manual.")
+            st.write("- **Requisitos:** Bloco de nota, gancho de armadilha, fio, água e um peso/macro para segurar o botão direito do mouse.")
+
+            st.markdown(data_separator)
+
+            st.markdown("#### 3. 🧪 Farm de XP e Ouro (Portal do Nether)")
+            st.write("- **Como funciona:** Constrói portais gigantes no Nether linkados para gerar quantidades massivas de Piglins Zumbificados.")
+            st.write("- **Vantagem:** Excelente para subir do nível 0 ao 30 em segundos e coletar pepitas/lingotes de ouro.")
