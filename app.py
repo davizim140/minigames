@@ -101,7 +101,6 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
         st.markdown("### 🔴 Pokébola Sugerida (Cobblemon & Pixelmon)")
         st.info("💡 **Dica de Captura:** Nos mods de Minecraft, qualquer Pokébola padrão funciona para capturar a maioria dos Pokémon, mas tipos específicos ajudam dependendo do peso, velocidade ou ambiente do Pokémon!")
         
-        tipos_str = [t.lower() for t in tipos]
         if 'Water' in tipos or 'Água' in tipos:
             bola_sugerida = "Dive Ball / Lure Ball (Excelente para Pokémon aquáticos ou pescados)"
         elif peso > 200:
@@ -208,55 +207,57 @@ else:
                 
                 with cols[idx % 3]:
                     st.markdown(f"**#{p_id}** - {p_nome}")
-                    img_url = f"https://raw.githubusercontent.com/Repo/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png" # fallback visual
-                    st.image(f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png", width=90)
+                    img_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png"
+                    st.image(img_url, width=90)
                     if st.button(f"Ver Detalhes", key=f"btn_gen_{p_id}_{idx}"):
                         st.session_state.pokemon_selecionado = p_id
                         st.rerun()
 
     with aba3:
-        st.subheader("🟩 Mods de Minecraft & Guia de 10 Farms")
-        st.write("Explore dicas oficiais e uma lista com 10 farms dedicadas para Cobblemon e Pixelmon junto com links de guias!")
+        st.subheader("🟩 Mods de Minecraft & Tutoriais em Vídeo de Farms")
+        st.write("Explore dicas, lista completa de 10 farms para cada mod e os links dos tutoriais do YouTube!")
 
-        sub_aba1, sub_aba2, sub_aba3 = st.tabs(["🟢 10 Farms de Cobblemon", "🟡 10 Farms de Pixelmon", "📚 Links Oficiais"])
+        sub_aba1, sub_aba2, sub_aba3 = st.tabs(["🟢 10 Farms de Cobblemon", "🟡 10 Farms de Pixelmon", "📺 Tutoriais do YouTube"])
 
         with sub_aba1:
             st.markdown("### 🟢 Top 10 Farms para Cobblemon")
-            st.write("Lista detalhada de 10 automações essenciais para o seu mundo Cobblemon:")
-
             st.markdown("1. **Farm Automática de Apricorns**: Plantação em fileiras colhida por carrinhos com funil ou Allays.")
             st.markdown("2. **Gerador Automático de Tumblestones**: Aproveita biomas específicos para gerar pedras de evolução.")
             st.markdown("3. **Farm de Pasture / Exp Passiva**: Sistema de currais cercados para gerar XP e amizade automática.")
             st.markdown("4. **Farm de Itens de Batalha (Held Items)**: Plataforma de batalha automatizada contra monstrinhos selvagens.")
             st.markdown("5. **Farm de Frutas (Berries) com Dispensers**: Sistema de osso-farelo (bonemeal) para reprodução rápida.")
-            st.markdown("6. **Arena de Treinamento de EVs Automática**: Espaço confinado com spawns específicos de tipos (ex: HP, Ataque).")
+            st.markdown("6. **Arena de Treinamento de EVs Automática**: Espaço confinado com spawns específicos de tipos.")
             st.markdown("7. **Farm de Apicultores e Mel para Comidas**: Útil para criar itens de cura caseiros.")
             st.markdown("8. **Farm de Drops de Cura / Medicinal Leek**: Plantações focadas em ervas medicinais do mod.")
-            st.markdown("9. **Estação de Troca Automatizada**: Configuração de baús e computadores para automação de comércio local.")
-            st.markdown("10. **Farm de Ovos / Incubação em Massa**: Sistema compacto com aquecedores e esteiras para chocar ovos rapidamente.")
-            
-            st.markdown("[🔗 Guia e Tutoriais do Cobblemon Wiki](https://wiki.cobblemon.com/)")
+            st.markdown("9. **Estação de Troca Automatizada**: Configuração de baús e computadores para comércio local.")
+            st.markdown("10. **Farm de Ovos / Incubação em Massa**: Sistema compacto com aquecedores e esteiras para chocar ovos.")
+            st.markdown("[🔗 Wiki Oficial do Cobblemon](https://wiki.cobblemon.com/)")
 
         with sub_aba2:
             st.markdown("### 🟡 Top 10 Farms para Pixelmon")
-            st.write("Lista detalhada de 10 automações e estruturas essenciais para o Pixelmon Reforged:")
-
             st.markdown("1. **Farm de Apricorns com Harvester**: Colheitadeiras mecânicas colhendo frutos automaticamente.")
             st.markdown("2. **Farm de Mints e Vitaminas**: Produção em escala de itens de alteração de atributos.")
             st.markdown("3. **Spawner Automático de Bosses**: Plataforma subterrânea iluminada para forçar o nascimento de chefões.")
-            st.markdown("4. **Farm de Minério de Bauxita (Alumínio)**: Mineração otimizada para criação de bases de Pokébolas.")
-            st.markdown("5. **Rancho de Criação (Breeding Ranch) Automatizado**: Sistema com pastos e relógios para ovos contínuos.")
+            st.markdown("4. **Farm de Minério de Bauxita (Alumínio)**: Mineração otimizada para bases de Pokébolas.")
+            st.markdown("5. **Rancho de Criação (Breeding Ranch) Automatizado**: Sistema com pastos e relógios para ovos.")
             st.markdown("6. **Farm de XP em Massa (Relearners/Tutors)**: Área de combate otimizada contra monstrinhos de alto nível.")
-            st.markdown("7. **Farm de Dinheiro (PokeDollars) com Pay Day**: Batalhas automatizadas contra NPCs ou Pokémon selvagens específicos.")
+            st.markdown("7. **Farm de Dinheiro (PokeDollars) com Pay Day**: Batalhas automatizadas contra NPCs.")
             st.markdown("8. **Farm de Frutas Especiais (Berries Raras)**: Estufas com sistemas de irrigação avançados.")
             st.markdown("9. **Reciclador de Itens / Apricorn Scrap Farm**: Conversão automática de itens inúteis em recursos.")
-            st.markdown("10. **Farm de Fósseis (Fossil Machine Automation)**: Sistema de esteiras e energia para restaurar fósseis em série.")
-
-            st.markdown("[🔗 Guia e Tutoriais do Pixelmon Wiki](https://pixelmonmod.com/wiki/)")
+            st.markdown("10. **Farm de Fósseis (Fossil Machine Automation)**: Sistema de esteiras e energia para fósseis.")
+            st.markdown("[🔗 Wiki Oficial do Pixelmon](https://pixelmonmod.com/wiki/)")
 
         with sub_aba3:
-            st.markdown("### 📚 Links Úteis e Comunidade")
-            st.markdown("- [Site Oficial do Cobblemon](https://cobblemon.com/)")
-            st.markdown("- [Wiki Oficial do Cobblemon](https://wiki.cobblemon.com/)")
-            st.markdown("- [Site Oficial do Pixelmon](https://pixelmonmod.com/)")
-            st.markdown("- [Wiki Oficial do Pixelmon](https://pixelmonmod.com/wiki/)")
+            st.markdown("### 📺 Tutoriais do YouTube Selecionados")
+            
+            st.markdown("#### 🟢 Cobblemon")
+            st.markdown("- [Assistir no YouTube: Multi-layered Apricorn Farm (Cobblemon)](https://www.youtube.com/watch?v=YPVa-ejpbMg)")
+            st.markdown("- [Assistir no YouTube: Apricorn Farming Tutorial](https://www.youtube.com/watch?v=hQ8t3CMhEFs)")
+            st.markdown("- [Assistir no YouTube: Easy AFK Apricorn Farm](https://www.youtube.com/watch?v=5PG0fVHx0Ns)")
+            
+            st.markdown("---")
+            
+            st.markdown("#### 🟡 Pixelmon")
+            st.markdown("- [Assistir no YouTube: Ultimate Apricorn Farm (Pixelmon)](https://www.youtube.com/watch?v=Pl_v3wdKSiI)")
+            st.markdown("- [Assistir no YouTube: Automatic Apricorn Farm 1.16.5](https://www.youtube.com/watch?v=GzAGLoOC0fk)")
+            st.markdown("- [Assistir no YouTube: Ranch Block Como Reproduzir Pokémons](https://www.youtube.com/watch?v=jGgccjYes2M)")
