@@ -62,7 +62,6 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
             for details in m['version_group_details']:
                 if details['move_learn_method']['name'] == 'level-up':
                     lvl = details['level_learned_at']
-                    # ALTERADO AQUI: Ignora nível 1 e 0 para sumir com os ataques iniciais de evolução
                     if lvl > 1:
                         movimentos_nivel.append({
                             'nivel': lvl,
@@ -112,7 +111,7 @@ else:
                         st.markdown(f"**#{p_id}** - {p_nome}")
                         img_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png"
                         st.image(img_url, width=80)
-                        if st.button(f"Ver Detalhes", key=f"btn_nome_{p_id}"):
+                        if st.button(f"Ver Detalhes", key=f"btn_nome_{p_id}_{idx}"):
                             st.session_state.pokemon_selecionado = p_id
                             st.rerun()
             else:
@@ -152,6 +151,7 @@ else:
                             st.markdown(f"**#{p_id}** - {p_nome}")
                             img_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png"
                             st.image(img_url, width=90)
-                            if st.button(f"Ver Detalhes", key=f"btn_gen_{p_id}"):
+                            # Chave única garantida para a aba de geração
+                            if st.button(f"Ver Detalhes", key=f"btn_gen_{p_id}_{idx}"):
                                 st.session_state.pokemon_selecionado = p_id
                                 st.rerun()
