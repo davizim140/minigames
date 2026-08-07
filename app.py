@@ -55,22 +55,20 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
                 st.progress(min(valor_stat, 100), text=f"{nome_stat}: {valor_stat}")
                 
         st.markdown("---")
-        st.markdown("### ⚔️ Ataques por Nível")
+        st.markdown("### ⚔️ Ataques por Nível (A partir do Nível 2)")
         
         movimentos_nivel = []
         for m in dados['moves']:
             for details in m['version_group_details']:
-                # Pega apenas os métodos por level-up na geração mais recente (ex: scarlet-violet ou sword-shield)
                 if details['move_learn_method']['name'] == 'level-up':
                     lvl = details['level_learned_at']
-                    # Ignora nível 0 (movimentos que já vêm por padrão ao evoluir ou nascer de formas anteriores indesejadas)
-                    if lvl > 0:
+                    # ALTERADO AQUI: Ignora nível 1 e 0 para sumir com os ataques iniciais de evolução
+                    if lvl > 1:
                         movimentos_nivel.append({
                             'nivel': lvl,
                             'nome': m['move']['name'].replace('-', ' ').capitalize()
                         })
         
-        # Remove duplicadas mantendo a primeira aparição limpa
         movimentos_unicos = {}
         for mov in movimentos_nivel:
             nome_mov = mov['nome']
@@ -84,7 +82,7 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
             dados_tabela = [{"Nível": m['nivel'], "Ataque": m['nome']} for m in movimentos_ordenados]
             st.dataframe(dados_tabela, use_container_width=True, hide_index=True)
         else:
-            st.write("Nenhum ataque por nível encontrado para este Pokémon.")
+            st.write("Nenhum ataque por nível superior encontrado para este Pokémon.")
     else:
         st.error("Erro ao carregar os dados do Pokémon.")
 
