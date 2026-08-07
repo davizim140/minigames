@@ -4,7 +4,7 @@ import requests
 st.set_page_config(page_title="Pokédex Oficial", page_icon="🔴", layout="centered")
 
 st.title("🔴 Pokédex Interativa")
-st.write("Pesquise por nome, letras, geração ou explore o conteúdo de Cobblemon, Pixelmon e Farms!")
+st.write("Pesquise por nome, letras, geração ou explore o conteúdo de Cobblemon, Pixelmon e Farms completas!")
 
 @st.cache_data
 def carregar_todos_pokemons():
@@ -208,86 +208,55 @@ else:
                 
                 with cols[idx % 3]:
                     st.markdown(f"**#{p_id}** - {p_nome}")
-                    img_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png"
-                    st.image(img_url, width=90)
+                    img_url = f"https://raw.githubusercontent.com/Repo/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png" # fallback visual
+                    st.image(f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png", width=90)
                     if st.button(f"Ver Detalhes", key=f"btn_gen_{p_id}_{idx}"):
                         st.session_state.pokemon_selecionado = p_id
                         st.rerun()
 
     with aba3:
-        st.subheader("🟩 Mods de Minecraft & Guia de Farms")
-        st.write("Explore dicas para Cobblemon/Pixelmon e tutoriais rápidos de farms de itens!")
+        st.subheader("🟩 Mods de Minecraft & Guia de 10 Farms")
+        st.write("Explore dicas oficiais e uma lista com 10 farms dedicadas para Cobblemon e Pixelmon junto com links de guias!")
 
-        sub_aba1, sub_aba2, sub_aba3 = st.tabs(["🟢 Cobblemon", "🟡 Pixelmon", "⚙️ Guia Completo de Farms"])
+        sub_aba1, sub_aba2, sub_aba3 = st.tabs(["🟢 10 Farms de Cobblemon", "🟡 10 Farms de Pixelmon", "📚 Links Oficiais"])
 
         with sub_aba1:
-            st.markdown("### 🟢 Sobre o Cobblemon")
-            st.write("O **Cobblemon** é um mod moderno focado em integração total com o estilo visual do Minecraft.")
-            st.markdown("#### 🛠️ Comandos Úteis")
-            st.code("/cobblemon give [jogador] [pokemon]\n/spawnpokemon\n/pokegive", language="text")
-            st.markdown("- [Site Oficial do Cobblemon](https://cobblemon.com/)")
-            st.markdown("- [Wiki Oficial](https://wiki.cobblemon.com/)")
+            st.markdown("### 🟢 Top 10 Farms para Cobblemon")
+            st.write("Lista detalhada de 10 automações essenciais para o seu mundo Cobblemon:")
+
+            st.markdown("1. **Farm Automática de Apricorns**: Plantação em fileiras colhida por carrinhos com funil ou Allays.")
+            st.markdown("2. **Gerador Automático de Tumblestones**: Aproveita biomas específicos para gerar pedras de evolução.")
+            st.markdown("3. **Farm de Pasture / Exp Passiva**: Sistema de currais cercados para gerar XP e amizade automática.")
+            st.markdown("4. **Farm de Itens de Batalha (Held Items)**: Plataforma de batalha automatizada contra monstrinhos selvagens.")
+            st.markdown("5. **Farm de Frutas (Berries) com Dispensers**: Sistema de osso-farelo (bonemeal) para reprodução rápida.")
+            st.markdown("6. **Arena de Treinamento de EVs Automática**: Espaço confinado com spawns específicos de tipos (ex: HP, Ataque).")
+            st.markdown("7. **Farm de Apicultores e Mel para Comidas**: Útil para criar itens de cura caseiros.")
+            st.markdown("8. **Farm de Drops de Cura / Medicinal Leek**: Plantações focadas em ervas medicinais do mod.")
+            st.markdown("9. **Estação de Troca Automatizada**: Configuração de baús e computadores para automação de comércio local.")
+            st.markdown("10. **Farm de Ovos / Incubação em Massa**: Sistema compacto com aquecedores e esteiras para chocar ovos rapidamente.")
+            
+            st.markdown("[🔗 Guia e Tutoriais do Cobblemon Wiki](https://wiki.cobblemon.com/)")
 
         with sub_aba2:
-            st.markdown("### 🟡 Sobre o Pixelmon (Pixelmon Reforged)")
-            st.write("O **Pixelmon** traz a experiência clássica dos jogos para o Minecraft com modelos 3D completos.")
-            st.markdown("#### 🛠️ Comandos Úteis")
-            st.code("/pokegive [jogador] [pokemon]\n/pokespawn [pokemon]\n/pokeheal", language="text")
-            st.markdown("- [Site Oficial do Pixelmon](https://pixelmonmod.com/)")
-            st.markdown("- [Wiki Oficial do Pixelmon](https://pixelmonmod.com/wiki/)")
+            st.markdown("### 🟡 Top 10 Farms para Pixelmon")
+            st.write("Lista detalhada de 10 automações e estruturas essenciais para o Pixelmon Reforged:")
+
+            st.markdown("1. **Farm de Apricorns com Harvester**: Colheitadeiras mecânicas colhendo frutos automaticamente.")
+            st.markdown("2. **Farm de Mints e Vitaminas**: Produção em escala de itens de alteração de atributos.")
+            st.markdown("3. **Spawner Automático de Bosses**: Plataforma subterrânea iluminada para forçar o nascimento de chefões.")
+            st.markdown("4. **Farm de Minério de Bauxita (Alumínio)**: Mineração otimizada para criação de bases de Pokébolas.")
+            st.markdown("5. **Rancho de Criação (Breeding Ranch) Automatizado**: Sistema com pastos e relógios para ovos contínuos.")
+            st.markdown("6. **Farm de XP em Massa (Relearners/Tutors)**: Área de combate otimizada contra monstrinhos de alto nível.")
+            st.markdown("7. **Farm de Dinheiro (PokeDollars) com Pay Day**: Batalhas automatizadas contra NPCs ou Pokémon selvagens específicos.")
+            st.markdown("8. **Farm de Frutas Especiais (Berries Raras)**: Estufas com sistemas de irrigação avançados.")
+            st.markdown("9. **Reciclador de Itens / Apricorn Scrap Farm**: Conversão automática de itens inúteis em recursos.")
+            st.markdown("10. **Farm de Fósseis (Fossil Machine Automation)**: Sistema de esteiras e energia para restaurar fósseis em série.")
+
+            st.markdown("[🔗 Guia e Tutoriais do Pixelmon Wiki](https://pixelmonmod.com/wiki/)")
 
         with sub_aba3:
-            st.markdown("### ⚙️ Guia Completo de Farms de Itens")
-
-            farm_tab1, farm_tab2, farm_tab3 = st.tabs(["🟢 Farms Cobblemon", "🟡 Farms Pixelmon", "🧱 Vanilla Minecraft"])
-
-            with farm_tab1:
-                st.markdown("#### 🟢 1. Farm Automática de Apricorns (Cobblemon)")
-                st.write("- **Item Obtido:** Apricorns (Vermelha, Azul, Amarela, etc.) para fazer Pokébolas.")
-                st.write("- **Como construir:** Plante árvores de Apricorn em fileiras com blocos de observadores (Observer) detectando o crescimento do fruto ou use um Allay / carrinho com funil (Hopper Minecart) passando por baixo dos blocos para coletar as frutas caídas.")
-
-                st.markdown("---")
-
-                st.markdown("#### 🟢 2. Farm de Tumblestones (Pedra Tumbl)")
-                st.write("- **Item Obtido:** Tumblestone, Black Tumblestone e Sky Tumblestone.")
-                st.write("- **Como construir:** Crie geradores automáticos de pedra (Cobblestone Generator) em biomas específicos onde as Tumblestones são geradas no lugar da pedra comum ou derrote Pokémon do tipo Pedra/Aço automaticamente.")
-
-                st.markdown("---")
-
-                st.markdown("#### 🟢 3. Farm de Drops de Batalha (Auto-Battler / KO)")
-                st.write("- **Item Obtido:** Helds Items, EXP Candies, Evolution Stones.")
-                st.write("- **Como construir:** Faça uma plataforma de spawn em cavernas ou oceanos com água empurrando Pokémon selvagens para um ponto central. Use um Pokémon forte no modo de batalha rápida para coletar drops constantes.")
-
-            with farm_tab2:
-                st.markdown("#### 🟡 1. Farm de Apricorns com Dispenser & Harvester (Pixelmon)")
-                st.write("- **Item Obtido:** Apricorns para tampas de Pokébolas.")
-                st.write("- **Como construir:** Plante as mudas de Apricorn em terra/grama, posicione Harvesters ou dispensers com tesouras/cliques automáticos para colher as frutas sem quebrar a árvore.")
-
-                st.markdown("---")
-
-                st.markdown("#### 🟡 2. Farm de Frutas / Berries e Mints")
-                st.write("- **Item Obtido:** Mints (para alterar Natureza), Berries de redução de EV e cura.")
-                st.write("- **Como construir:** Monte fazendas irrigadas com água e fertilizante (Wailmer Pail / Bonemeal especial). Use robôs ou funis para armazenar os frutos maduros.")
-
-                st.markdown("---")
-
-                st.markdown("#### 🟡 3. Farm de Bosses & Mega Stones / Bauxita")
-                st.write("- **Item Obtido:** Mega Stones, Bauxita (Alumínio), TMs e Held Items valiosos.")
-                st.write("- **Como construir:** Crie plataformas de spawn no ar ou no subsolo (de acordo com o bioma do Boss desejado) utilizando lâmpadas de iluminação para controlar o limite de monstrinhos.")
-
-            with farm_tab3:
-                st.markdown("#### 🧱 1. Farm de Ferro Automática (Iron Farm)")
-                st.write("- **Como funciona:** Utiliza um aldeão assustado por um zumbi para gerar Golems de Ferro continuamente.")
-                st.write("- **Requisitos:** 3 Aldeões, 1 Zumbi com name tag, camas, lava e funis.")
-
-                st.markdown("---")
-
-                st.markdown("#### 🧱 2. Farm de Pesca AFK")
-                st.write("- **Como funciona:** Permite pescar automaticamente itens valiosos sem esforço manual.")
-                st.write("- **Requisitos:** Bloco de nota, gancho de armadilha, fio, água e um peso/macro no botão direito.")
-
-                st.markdown("---")
-
-                st.markdown("#### 🧱 3. Farm de XP e Ouro (Portal do Nether)")
-                st.write("- **Como funciona:** Constrói portais gigantes no Nether para gerar quantidades massivas de Piglins Zumbificados.")
-                st.write("- **Vantagem:** Excelente para subir do nível 0 ao 30 rapidamente e coletar ouro.")
+            st.markdown("### 📚 Links Úteis e Comunidade")
+            st.markdown("- [Site Oficial do Cobblemon](https://cobblemon.com/)")
+            st.markdown("- [Wiki Oficial do Cobblemon](https://wiki.cobblemon.com/)")
+            st.markdown("- [Site Oficial do Pixelmon](https://pixelmonmod.com/)")
+            st.markdown("- [Wiki Oficial do Pixelmon](https://pixelmonmod.com/wiki/)")
