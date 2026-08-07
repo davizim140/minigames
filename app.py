@@ -88,6 +88,9 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
 if "pokemon_selecionado" not in st.session_state:
     st.session_state.pokemon_selecionado = None
 
+if "geracao_atual" not in st.session_state:
+    st.session_state.geracao_atual = None
+
 if st.session_state.pokemon_selecionado:
     mostrar_detalhes_pokemon(st.session_state.pokemon_selecionado)
 else:
@@ -140,18 +143,22 @@ else:
                 
                 if resp_gen.status_code == 200:
                     species_list = sorted(resp_gen.json()['pokemon_species'], key=lambda x: int(x['url'].split('/')[-2]))
-                    
-                    st.success(f"Encontrados {len(species_list)} Pokémon!")
-                    cols = st.columns(3)
-                    for idx, pokemon in enumerate(species_list):
-                        p_nome = pokemon['name'].capitalize()
-                        p_id = pokemon['url'].split('/')[-2]
-                        
-                        with cols[idx % 3]:
-                            st.markdown(f"**#{p_id}** - {p_nome}")
-                            img_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png"
-                            st.image(img_url, width=90)
-                            # Chave única garantida para a aba de geração
-                            if st.button(f"Ver Detalhes", key=f"btn_gen_{p_id}_{idx}"):
-                                st.session_state.pokemon_selecionado = p_id
-                                st.rerun()
+                    st.session_state.geracao_atual = species_list
+                else:
+                    st.error("Erro ao carregar os dados da geração.")
+
+        # Exibe os pokémon salvos no estado da geração atual (permite clicar sem sumir)
+        if st.session_state.geracao_atual:
+            st.success(f"Encontrados {len(st.session_state.geracao_atual)} Pokémon!")
+            cols = st.columns(3)
+            for idx, pokemon in enumerate(st.session_state.geracao_atual):
+                p_nome = pokemon['name'].capitalize()
+                p_id = pokemon['url'].split('/')[-2]
+                
+                with cols[idx % 3]:
+                    st.markdown(f"**#{p_id}** - {p_nome}")
+                    img_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png"
+                    st.image(img_url, width=90)
+                    if st.button(f"Ver Detalhes", key=f"btn_gen_{p_id}_{idx}"):
+                        st.session_state.pokemon_selecionado = p_id
+                        st.rerun()
