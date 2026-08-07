@@ -98,6 +98,23 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
                 st.progress(min(valor_stat, 100), text=f"{nome_stat}: {valor_stat}")
                 
         st.markdown("---")
+        st.markdown("### 🔴 Pokébola Sugerida (Cobblemon & Pixelmon)")
+        st.info("💡 **Dica de Captura:** Nos mods de Minecraft, qualquer Pokébola padrão funciona para capturar a maioria dos Pokémon, mas tipos específicos ajudam dependendo do peso, velocidade ou ambiente do Pokémon!")
+        
+        # Lógica simples baseada nos tipos ou peso para sugerir pokébolas divertidas
+        tipos_str = [t.lower() for t in tipos]
+        if 'Water' in tipos or 'Água' in tipos:
+            bola_sugerida = "Dive Ball / Lure Ball (Excelente para Pokémon aquáticos ou pescados)"
+        elif peso > 200:
+            bola_sugerida = "Heavy Ball (Ideal para Pokémon muito pesados)"
+        elif any(t in ['Flying', 'Electric'] for t in tipos):
+            bola_sugerida = "Fast Ball (Ótima para Pokémon rápidos)"
+        else:
+            bola_sugerida = "Poke Ball / Great Ball / Ultra Ball (Padrão para qualquer espécie)"
+            
+        st.success(f"**Recomendação:** {bola_sugerida}")
+                
+        st.markdown("---")
         st.markdown("### 🧬 Guia de Evolução")
         
         etapas_evolucao = obter_cadeia_evolucao(nome_original)
@@ -227,17 +244,15 @@ else:
             st.markdown("#### 1. 🌾 Farm de Ferro Automática (Iron Farm)")
             st.write("- **Como funciona:** Utiliza um aldeão assustado por um zumbi para gerar Golems de Ferro continuamente.")
             st.write("- **Requisitos:** 3 Aldeões, 1 Zumbi com identificador (name tag), camas e uma plataforma de queda com lava e funis.")
-            st.write("- **Dica:** Mantenha a farm longe de vilas ativas para evitar interferências no spawn dos Golems.")
 
-            data_separator = "---"
-            st.markdown(data_separator)
+            st.markdown("---")
 
             st.markdown("#### 2. 🎣 Farm de pesca AFK")
-            st.write("- **Como funciona:** Permite pescar automaticamente itens valiosos (como livros encantados, arcos e varas) sem esforço manual.")
+            st.write("- **Como funciona:** Permite pescar automaticamente itens valiosos sem esforço manual.")
             st.write("- **Requisitos:** Bloco de nota, gancho de armadilha, fio, água e um peso/macro para segurar o botão direito do mouse.")
 
-            st.markdown(data_separator)
+            st.markdown("---")
 
             st.markdown("#### 3. 🧪 Farm de XP e Ouro (Portal do Nether)")
             st.write("- **Como funciona:** Constrói portais gigantes no Nether linkados para gerar quantidades massivas de Piglins Zumbificados.")
-            st.write("- **Vantagem:** Excelente para subir do nível 0 ao 30 em segundos e coletar pepitas/lingotes de ouro.")
+            st.write("- **Vantagem:** Excelente para subir do nível 0 ao 30 em segundos e coletar ouro.")
