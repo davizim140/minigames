@@ -16,7 +16,6 @@ def carregar_todos_pokemons():
 
 todos_os_pokemons = carregar_todos_pokemons()
 
-# Função para exibir a ficha completa do Pokémon selecionado
 def mostrar_detalhes_pokemon(poke_id_ou_nome):
     url = f"https://pokeapi.co/api/v2/pokemon/{poke_id_ou_nome}"
     resposta = requests.get(url)
@@ -56,32 +55,29 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
                 st.progress(min(valor_stat, 100), text=f"{nome_stat}: {valor_stat}")
                 
         st.markdown("---")
-        st.markdown("### ⚔️ Ataques e Níveis de Aprendizado")
-        st.write("Movimentos aprendidos por nível:")
+        st.markdown("### ⚔️ Ataques por Nível")
         
-        # Filtra os ataques aprendidos por subida de nível ("level-up")
         movimentos_nivel = []
         for m in dados['moves']:
             for details in m['version_group_details']:
+                # Pega apenas os golpes aprendidos por nível na versão mais recente
                 if details['move_learn_method']['name'] == 'level-up':
                     movimentos_nivel.append({
                         'nivel': details['level_learned_at'],
                         'nome': m['move']['name'].replace('-', ' ').capitalize()
                     })
         
-        # Ordena por nível
-        movimentos_nivel = sorted(movimentos_nivel, key=lambda x: x['nivel'])
-        
-        # Remove duplicadas mantendo o menor nível
+        # Agrupa e pega o menor nível de aparição de cada ataque para evitar repetições excessivas
         movimentos_unicos = {}
         for mov in movimentos_nivel:
-            if mov['nome'] not in movimentos_unicos or mov['nivel'] < movimentos_unicos[mov['nome']]:
-                movimentos_unicos[mov['nome']] = mov['nivel']
+            nome_mov = mov['nome']
+            nivel_mov = mov['nivel']
+            if nome_mov not in movimentos_unicos or nivel_mov < movimentos_unicos[nome_mov]:
+                movimentos_unicos[nome_mov] = nivel_mov
                 
         movimentos_ordenados = sorted([{'nome': k, 'nivel': v} for k, v in movimentos_unicos.items()], key=lambda x: x['nivel'])
         
         if movimentos_ordenados:
-            # Exibe em tabela limpa
             dados_tabela = [{"Nível": m['nivel'], "Ataque": m['nome']} for m in movimentos_ordenados]
             st.dataframe(dados_tabela, use_container_width=True, hide_index=True)
         else:
@@ -89,7 +85,6 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
     else:
         st.error("Erro ao carregar os dados do Pokémon.")
 
-# Gerenciamento de estado para saber se clicou em algum Pokémon
 if "pokemon_selecionado" not in st.session_state:
     st.session_state.pokemon_selecionado = None
 
