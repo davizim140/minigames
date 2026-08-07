@@ -60,14 +60,17 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
         movimentos_nivel = []
         for m in dados['moves']:
             for details in m['version_group_details']:
-                # Pega apenas os golpes aprendidos por nível na versão mais recente
+                # Pega apenas os métodos por level-up na geração mais recente (ex: scarlet-violet ou sword-shield)
                 if details['move_learn_method']['name'] == 'level-up':
-                    movimentos_nivel.append({
-                        'nivel': details['level_learned_at'],
-                        'nome': m['move']['name'].replace('-', ' ').capitalize()
-                    })
+                    lvl = details['level_learned_at']
+                    # Ignora nível 0 (movimentos que já vêm por padrão ao evoluir ou nascer de formas anteriores indesejadas)
+                    if lvl > 0:
+                        movimentos_nivel.append({
+                            'nivel': lvl,
+                            'nome': m['move']['name'].replace('-', ' ').capitalize()
+                        })
         
-        # Agrupa e pega o menor nível de aparição de cada ataque para evitar repetições excessivas
+        # Remove duplicadas mantendo a primeira aparição limpa
         movimentos_unicos = {}
         for mov in movimentos_nivel:
             nome_mov = mov['nome']
