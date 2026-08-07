@@ -4,7 +4,7 @@ import requests
 st.set_page_config(page_title="Pokédex Oficial", page_icon="🔴", layout="centered")
 
 st.title("🔴 Pokédex Interativa")
-st.write("Pesquise por nome, letras ou geração, e clique para ver os detalhes!")
+st.write("Pesquise por nome, letras ou geração, e clique para ver os detalhes e evoluções!")
 
 @st.cache_data
 def carregar_todos_pokemons():
@@ -16,13 +16,56 @@ def carregar_todos_pokemons():
 
 todos_os_pokemons = carregar_todos_pokemons()
 
+@st.cache_data(ttl=3600)
+def obter_cadeia_evolucao(especie_nome):
+    url_especie = f"https://pokeapi.co/api/v2/pokemon-species/{especie_nome}"
+    resp_especie = requests.get(url_especie)
+    if resp_especie.status_code != 200:
+        return []
+    
+    url_evolucao = resp_especie.json()['evolution_chain']['url']
+    resp_evo = requests.get(url_evolucao)
+    if resp_evo.status_code != 200:
+        return []
+    
+    dados_evo = resp_evo.json()['chain']
+    lista_etapas = []
+    
+    def processar_etapa(node):
+        nome_poke = node['species']['name']
+        id_poke = node['species']['url'].split('/')[-2]
+        
+        detalhes_metodo = []
+        if node['evolution_details']:
+            detalhe = node['evolution_details'][0]
+            if detalhe['min_level']:
+                detalhes_metodo.append(f"Nível {detalhe['min_level']}")
+            if detalhe['item']:
+                detalhes_metodo.append(f"Uso de {detalhe['item']['name'].replace('-', ' ').capitalize()}")
+            if detalhe['trigger']:
+                trigger_name = detalhe['trigger']['name']
+                if trigger_name == 'trade':
+                    detalhes_metodo.append("Troca")
+                elif trigger_name == 'friendship':
+                    detalhes_metodo.append("Felicidade alta")
+        
+        metodo_str = " / ".join(detalhes_metodo) if detalhes_metodo else "Condição especial"
+        lista_etapas.append({'nome': nome_poke.capitalize(), 'id': id_poke, 'metodo': metodo_str})
+        
+        for proximo in node['evolves_to']:
+            processar_etapa(proximo)
+            
+    processar_etapa(dados_evo)
+    return lista_etapas
+
 def mostrar_detalhes_pokemon(poke_id_ou_nome):
     url = f"https://pokeapi.co/api/v2/pokemon/{poke_id_ou_nome}"
     resposta = requests.get(url)
     
     if resposta.status_code == 200:
         dados = resposta.json()
-        nome = dados['name'].capitalize()
+        nome_original = dados['name']
+        nome = nome_original.capitalize()
         id_pkmn = dados['id']
         peso = dados['weight'] / 10
         altura = dados['height'] / 10
@@ -53,6 +96,28 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
                 nome_stat = s['stat']['name'].upper()
                 valor_stat = s['base_stat']
                 st.progress(min(valor_stat, 100), text=f"{nome_stat}: {valor_stat}")
+                
+        st.markdown("---")
+        st.markdown("### 🧬 Guia de Evolução")
+        
+        etapas_evolucao = obter_cadeia_evolucao(nome_original)
+        if etapas_evolucao:
+            cols_evo = st.columns(len(etapas_evolucao))
+            for idx, evo in enumerate(etapas_evolucao):
+                with cols_evo[idx]:
+                    st.markdown(f"**#{evo['id']} - {evo['nome']}**")
+                    img_evo = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{evo['id']}.png"
+                    st.image(img_evo, width=100)
+                    if idx > 0:
+                        st.caption(f"⬆️ {evo['metodo']}")
+                    else:
+                        st.caption("Forma Base")
+                        
+                    if st.button("Ver", key=f"btn_evo_{evo['id']}"):
+                        st.session_state.pokemon_selecionado = evo['id']
+                        st.rerun()
+        else:
+            st.write("Este Pokémon não possui evoluções registradas ou ocorreu um erro ao buscar.")
     else:
         st.error("Erro ao carregar os dados do Pokémon.")
 
