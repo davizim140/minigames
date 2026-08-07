@@ -55,33 +55,51 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
                 st.progress(min(valor_stat, 100), text=f"{nome_stat}: {valor_stat}")
                 
         st.markdown("---")
-        st.markdown("### ⚔️ Ataques por Nível (A partir do Nível 2)")
+        st.markdown("### ⚔️ Ataques por Forma de Aprendizado")
         
-        movimentos_nivel = []
+        metodos_nomes = {
+            'level-up': 'Por Nível',
+            'machine': 'Por MT / HM (Máquina)',
+            'tutor': 'Por Tutor',
+            'egg': 'Por Ovo (Breeding)'
+        }
+        
+        movimentos_por_metodo = {v: [] for v in metodos_nomes.values()}
+        
         for m in dados['moves']:
+            nome_ataque = m['move']['name'].replace('-', ' ').capitalize()
             for details in m['version_group_details']:
-                if details['move_learn_method']['name'] == 'level-up':
-                    lvl = details['level_learned_at']
-                    if lvl > 1:
-                        movimentos_nivel.append({
-                            'nivel': lvl,
-                            'nome': m['move']['name'].replace('-', ' ').capitalize()
-                        })
+                metodo_raw = details['move_learn_method']['name']
+                if metodo_raw in metodos_nomes:
+                    metodo_amigavel = metodos_nomes[metodo_raw]
+                    detalhe_extra = ""
+                    
+                    if metodo_raw == 'level-up':
+                        lvl = details['level_learned_at']
+                        if lvl > 0:
+                            detalhe_extra = f" (Nível {lvl})"
+                        else:
+                            continue
+                    
+                    item_info = f"{nome_ataque}{detalhe_extra}"
+                    if item_info not in movimentos_por_metodo[metodo_amigavel]:
+                        movimentos_por_metodo[metodo_amigavel].append(item_info)
+                        
+        abas_metodos = st.tabs(list(movimentos_por_metodo.keys()))
         
-        movimentos_unicos = {}
-        for mov in movimentos_nivel:
-            nome_mov = mov['nome']
-            nivel_mov = mov['nivel']
-            if nome_mov not in movimentos_unicos or nivel_mov < movimentos_unicos[nome_mov]:
-                movimentos_unicos[nome_mov] = nivel_mov
-                
-        movimentos_ordenados = sorted([{'nome': k, 'nivel': v} for k, v in movimentos_unicos.items()], key=lambda x: x['nivel'])
-        
-        if movimentos_ordenados:
-            dados_tabela = [{"Nível": m['nivel'], "Ataque": m['nome']} for m in movimentos_ordenados]
-            st.dataframe(dados_tabela, use_container_width=True, hide_index=True)
-        else:
-            st.write("Nenhum ataque por nível superior encontrado para este Pokémon.")
+        for tab, (metodo, lista_ataques) in zip(abas_metodos, movimentos_por_metodo.items()):
+            with tab:
+                if lista_ataques:
+                    if metodo == 'Por Nível':
+                        # Ordena por nível extraído do texto se for nível
+                        lista_ataques_ordenados = sorted(lista_ataques, key=lambda x: int(x.split('Nível ')[1].split(')')[0]) if 'Nível ' in x else 0)
+                        for atq in lista_ataques_ordenados:
+                            st.write(f"• {atq}")
+                    else:
+                        for atq in sorted(lista_ataques):
+                            st.write(f"• {atq}")
+                else:
+                    st.write(f"Nenhum ataque encontrado para esta categoria.")
     else:
         st.error("Erro ao carregar os dados do Pokémon.")
 
