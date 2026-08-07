@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+from bs4 import BeautifulSoup
 
 st.set_page_config(page_title="Pokédex Oficial", page_icon="🔴", layout="centered")
 
@@ -16,13 +17,75 @@ def carregar_todos_pokemons():
 
 todos_os_pokemons = carregar_todos_pokemons()
 
+@st.cache_data(ttl=3600)
+def buscar_ataques_pokemondb(nome_pokemon):
+    nome_formatado = nome_pokemon.lower()
+    url = f"https://pokemondb.net/pokedex/{nome_formatado}"
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    
+    resposta = requests.get(url, headers=headers)
+    ataques_por_metodo = {
+        'Por Nível': [],
+        'Por MT / HM (Máquina)': [],
+        'Por Ovo (Breeding)': [],
+        'Por Tutor': []
+    }
+    
+    if resposta.status_code != 200:
+        return ataques_por_metodo
+        
+    soup = BeautifulSoup(resposta.text, 'html.parser')
+    
+    # Mapeamento das tabelas do PokémonDB baseadas nos títulos das seções
+    tabelas = soup.find_all('table', {'class': 'data-table'})
+    
+    for tabela in tabelas:
+        # Tenta achar o título anterior para saber qual é o método
+        h3 = tabela.find_previous('h3')
+        if not h3:
+            continue
+        titulo_secao = h3.text.lower()
+        
+        # Identifica a categoria
+        categoria = None
+        if 'level' in titulo_secao:
+            categoria = 'Por Nível'
+        elif 'machine' in titulo_secao or 'tm' in titulo_secao:
+            categoria = 'Por MT / HM (Máquina)'
+        elif 'egg' in titulo_secao:
+            categoria = 'Por Ovo (Breeding)'
+        elif 'tutor' in titulo_secao:
+            categoria = 'Por Tutor'
+            
+        if not categoria:
+            continue
+            
+        linhas = tabela.find_all('tr')
+        for linha in linhas[1:]:  # Pula o cabeçalho
+            colunas = linha.find_all('td')
+            if len(colunas) >= 2:
+                if categoria == 'Por Nível':
+                    nivel = colunas[0].text.strip()
+                    nome_ataque = colunas[1].text.strip()
+                    if nivel and nome_ataque:
+                        item = f"{nome_ataque} (Nível {nivel})"
+                        if item not in ataques_por_metodo[categoria]:
+                            ataques_por_metodo[categoria].append(item)
+                else:
+                    nome_ataque = colunas[0].text.strip()
+                    if nome_ataque and nome_ataque not in ataques_por_metodo[categoria]:
+                        ataques_por_metodo[categoria].append(nome_ataque)
+                        
+    return ataques_por_metodo
+
 def mostrar_detalhes_pokemon(poke_id_ou_nome):
     url = f"https://pokeapi.co/api/v2/pokemon/{poke_id_ou_nome}"
     resposta = requests.get(url)
     
     if resposta.status_code == 200:
         dados = resposta.json()
-        nome = dados['name'].capitalize()
+        nome_original = dados['name']
+        nome = nome_original.capitalize()
         id_pkmn = dados['id']
         peso = dados['weight'] / 10
         altura = dados['height'] / 10
@@ -55,43 +118,17 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
                 st.progress(min(valor_stat, 100), text=f"{nome_stat}: {valor_stat}")
                 
         st.markdown("---")
-        st.markdown("### ⚔️ Ataques por Forma de Aprendizado")
+        st.markdown("### ⚔️ Ataques por Forma (PokémonDB)")
         
-        metodos_nomes = {
-            'level-up': 'Por Nível',
-            'machine': 'Por MT / HM (Máquina)',
-            'tutor': 'Por Tutor',
-            'egg': 'Por Ovo (Breeding)'
-        }
-        
-        movimentos_por_metodo = {v: [] for v in metodos_nomes.values()}
-        
-        for m in dados['moves']:
-            nome_ataque = m['move']['name'].replace('-', ' ').capitalize()
-            for details in m['version_group_details']:
-                metodo_raw = details['move_learn_method']['name']
-                if metodo_raw in metodos_nomes:
-                    metodo_amigavel = metodos_nomes[metodo_raw]
-                    detalhe_extra = ""
-                    
-                    if metodo_raw == 'level-up':
-                        lvl = details['level_learned_at']
-                        if lvl > 0:
-                            detalhe_extra = f" (Nível {lvl})"
-                        else:
-                            continue
-                    
-                    item_info = f"{nome_ataque}{detalhe_extra}"
-                    if item_info not in movimentos_por_metodo[metodo_amigavel]:
-                        movimentos_por_metodo[metodo_amigavel].append(item_info)
-                        
+        with st.spinner("Buscando ataques direto do PokémonDB..."):
+            movimentos_por_metodo = buscar_ataques_pokemondb(nome_original)
+            
         abas_metodos = st.tabs(list(movimentos_por_metodo.keys()))
         
         for tab, (metodo, lista_ataques) in zip(abas_metodos, movimentos_por_metodo.items()):
             with tab:
                 if lista_ataques:
                     if metodo == 'Por Nível':
-                        # Ordena por nível extraído do texto se for nível
                         lista_ataques_ordenados = sorted(lista_ataques, key=lambda x: int(x.split('Nível ')[1].split(')')[0]) if 'Nível ' in x else 0)
                         for atq in lista_ataques_ordenados:
                             st.write(f"• {atq}")
@@ -99,7 +136,7 @@ def mostrar_detalhes_pokemon(poke_id_ou_nome):
                         for atq in sorted(lista_ataques):
                             st.write(f"• {atq}")
                 else:
-                    st.write(f"Nenhum ataque encontrado para esta categoria.")
+                    st.write("Nenhum ataque encontrado nesta categoria para este Pokémon.")
     else:
         st.error("Erro ao carregar os dados do Pokémon.")
 
