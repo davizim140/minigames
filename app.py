@@ -4,7 +4,7 @@ import requests
 st.set_page_config(page_title="Pokédex Oficial", page_icon="🔴", layout="centered")
 
 st.title("🔴 Pokédex Interativa")
-st.write("Pesquise por nome, letras ou geração, e clique para ver os detalhes e evoluções!")
+st.write("Pesquise por nome, letras, geração ou explore o conteúdo de Cobblemon e Pixelmon!")
 
 @st.cache_data
 def carregar_todos_pokemons():
@@ -130,7 +130,7 @@ if "geracao_atual" not in st.session_state:
 if st.session_state.pokemon_selecionado:
     mostrar_detalhes_pokemon(st.session_state.pokemon_selecionado)
 else:
-    aba1, aba2 = st.tabs(["🔍 Pesquisa por Nome ou Letras", "🌍 Pesquisar por Geração"])
+    aba1, aba2, aba3 = st.tabs(["🔍 Pesquisa por Nome ou Letras", "🌍 Pesquisar por Geração", "🟩 Cobblemon & Pixelmon"])
 
     with aba1:
         termo_busca = st.text_input("Digite o nome ou letras do Pokémon (ex: 'cha', 'pikachu'):").lower().strip()
@@ -193,7 +193,36 @@ else:
                 with cols[idx % 3]:
                     st.markdown(f"**#{p_id}** - {p_nome}")
                     img_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png"
+                    img_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{p_id}.png"
                     st.image(img_url, width=90)
                     if st.button(f"Ver Detalhes", key=f"btn_gen_{p_id}_{idx}"):
                         st.session_state.pokemon_selecionado = p_id
                         st.rerun()
+
+    with aba3:
+        st.subheader("🟩 Mods de Minecraft: Cobblemon & Pixelmon")
+        st.write("Informações e dicas úteis para os principais mods de Pokémon no Minecraft!")
+
+        sub_aba1, sub_aba2 = st.tabs(["🟢 Cobblemon", "🟡 Pixelmon"])
+
+        with sub_aba1:
+            st.markdown("### 🟢 Sobre o Cobblemon")
+            st.write("O **Cobblemon** é um mod moderno focado em integração total com o estilo visual do Minecraft (estilo Fakemon/Vanilla) e compatibilidade com datapacks e mods de animação.")
+            
+            st.markdown("#### 🛠️ Comandos Úteis (Admin/Cheat)")
+            st.code("/cobblemon give [jogador] [pokemon] - Dá um Pokémon para o jogador\n/spawnpokemon - Spawna um Pokémon manualmente\n/pokegive - Atalho para resgatar monstrinhos", language="text")
+
+            st.markdown("#### 🌐 Links e Recursos")
+            st.markdown("- [Site Oficial do Cobblemon](https://cobblemon.com/)")
+            st.markdown("- [Wiki Oficial](https://wiki.cobblemon.com/)")
+
+        with sub_aba2:
+            st.markdown("### 🟡 Sobre o Pixelmon (Pixelmon Reforged)")
+            st.write("O **Pixelmon** traz a experiência clássica dos jogos de console para o Minecraft, com modelos 3D fiéis, sistemas completos de batalhas, GYMs, NPCs e montarias.")
+
+            st.markdown("#### 🛠️ Comandos Úteis")
+            st.code("/pokegive [jogador] [pokemon] - Adiciona um Pokémon à equipe ou PC\n/pokespawn [pokemon] - Força o spawn de um Pokémon\n/pokeheal [jogador] - Cura todos os Pokémon da equipe", language="text")
+
+            st.markdown("#### 🌐 Links e Recursos")
+            st.markdown("- [Site Oficial do Pixelmon](https://pixelmonmod.com/)")
+            st.markdown("- [Wiki Oficial do Pixelmon](https://pixelmonmod.com/wiki/)")
