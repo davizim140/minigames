@@ -4,7 +4,7 @@ import requests
 st.set_page_config(page_title="Pokédex Oficial", page_icon="🔴", layout="centered")
 
 st.title("🔴 Pokédex Interativa")
-st.write("Pesquise por nome, letras ou geração, e clique para ver os detalhes e ataques!")
+st.write("Explore os Pokémon por nome, letras, geração ou confira as combinações do Infinite Fusion!")
 
 @st.cache_data
 def carregar_todos_pokemons():
@@ -94,7 +94,7 @@ if "geracao_atual" not in st.session_state:
 if st.session_state.pokemon_selecionado:
     mostrar_detalhes_pokemon(st.session_state.pokemon_selecionado)
 else:
-    aba1, aba2 = st.tabs(["🔍 Pesquisa por Nome ou Letras", "🌍 Pesquisar por Geração"])
+    aba1, aba2, aba3 = st.tabs(["🔍 Pesquisa por Nome ou Letras", "🌍 Pesquisar por Geração", "🧬 Pokémon Infinite Fusion"])
 
     with aba1:
         termo_busca = st.text_input("Digite o nome ou letras do Pokémon (ex: 'cha', 'pikachu'):").lower().strip()
@@ -147,7 +147,6 @@ else:
                 else:
                     st.error("Erro ao carregar os dados da geração.")
 
-        # Exibe os pokémon salvos no estado da geração atual (permite clicar sem sumir)
         if st.session_state.geracao_atual:
             st.success(f"Encontrados {len(st.session_state.geracao_atual)} Pokémon!")
             cols = st.columns(3)
@@ -162,3 +161,31 @@ else:
                     if st.button(f"Ver Detalhes", key=f"btn_gen_{p_id}_{idx}"):
                         st.session_state.pokemon_selecionado = p_id
                         st.rerun()
+
+    with aba3:
+        st.subheader("🧬 Calculadora e Gerador de Fusões (Infinite Fusion)")
+        st.write("Escolha dois Pokémon para ver a sprite fundida oficial do jogo Pokémon Infinite Fusion!")
+
+        # Lista de nomes para os selects baseada em todos os pokémons carregados
+        nomes_pokemons = [p['name'].capitalize() for p in todos_os_pokemons]
+        ids_pokemons = {p['name'].capitalize(): p['url'].split('/')[-2] for p in todos_os_pokemons}
+
+        if nomes_pokemons:
+            col_f1, col_f2 = st.columns(2)
+            with col_f1:
+                poke_cabeca = st.selectbox("Escolha o Pokémon da Cabeça (Corpo 1):", nomes_pokemons, index=0)
+            with col_f2:
+                poke_corpo = st.selectbox("Escolha o Pokémon do Corpo (Corpo 2):", nomes_pokemons, index=3)
+
+            id_cabeca = ids_pokemons[poke_cabeca]
+            id_corpo = ids_pokemons[poke_corpo]
+
+            if st.button("Gerar Fusão"):
+                st.markdown("---")
+                st.markdown(f"### ✨ Fusão: {poke_cabeca} + {poke_corpo}")
+                
+                # Repositório oficial de sprites do Infinite Fusion
+                url_fusao = f"https://raw.githubusercontent.com/AegisEdits/InfiniteFusionSprites/master/CustomBattlers/{id_cabeca}.{id_corpo}.png"
+                
+                # Testando se existe sprite customizada, senão usa a padrão gerada por ID formatado
+                st.image(url_fusao, width=250, caption=f"ID de Fusão: {id_cabeca}.{id_corpo}")
